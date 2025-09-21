@@ -177,4 +177,71 @@ class Proposal {
             return false;
         }
     }
+
+    public function getById($id) {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM proposals WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function update($data) {
+        try {
+            $this->db->beginTransaction();
+
+            // 1. Update proposals table
+            $stmt = $this->db->prepare(
+                "UPDATE proposals SET title = :title, event_datetime = :event_datetime, objective = :objective, priority = :priority
+                 WHERE id = :id"
+            );
+            $stmt->execute([
+                ':id' => $data['id'],
+                ':title' => $data['title'],
+                ':event_datetime' => $data['event_datetime'],
+                ':objective' => $data['objective'],
+                ':priority' => $data['priority']
+            ]);
+
+            // 2. Delete old pivot entries
+            $this->db->prepare("DELETE FROM proposal_audiences WHERE proposal_id = :id")->execute([':id' => $data['id']]);
+            $this->db->prepare("DELETE FROM proposal_organizers WHERE proposal_id = :id")->execute([':id' => $data['id']]);
+
+            // 3. Insert new audiences
+            $stmt_a = $this->db->prepare("INSERT INTO proposal_audiences (proposal_id, audience_id) VALUES (:proposal_id, :audience_id)");
+            foreach ($data['audiences'] as $audienceId) {
+                $stmt_a->execute([':proposal_id' => $data['id'], ':audience_id' => $audienceId]);
+            }
+
+            // 4. Insert new organizers
+            $stmt_o = $this->db->prepare("INSERT INTO proposal_organizers (proposal_id, organizer_id) VALUES (:proposal_id, :organizer_id)");
+            foreach ($data['organizers'] as $organizerId) {
+                $stmt_o->execute([':proposal_id' => $data['id'], ':organizer_id' => $organizerId]);
+            }
+
+            $this->db->commit();
+            return true;
+
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function delete($id) {
+        try {
+            // Transaction to ensure all related data is deleted.
+            $this->db->beginTransaction();
+            $this->db->prepare("DELETE FROM proposal_audiences WHERE proposal_id = :id")->execute([':id' => $id]);
+            $this->db->prepare("DELETE FROM proposal_organizers WHERE proposal_id = :id")->execute([':id' => $id]);
+            $this->db->prepare("DELETE FROM proposals WHERE id = :id")->execute([':id' => $id]);
+            $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
 }

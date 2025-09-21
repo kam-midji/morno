@@ -1,7 +1,7 @@
 </div> <!-- /container -->
 
     <!-- Jalali Date Picker JS -->
-    <script type="text/javascript" src="<?php echo 'assets/js/jalalidatepicker.min.js'; ?>"></script>
+    <script type="text/javascript" src="assets/js/jalalidatepicker.min.js"></script>
     <script type="text/javascript">
         // Initialize date picker on any input with data-jdp attribute
         jalaliDatepicker.startWatch({

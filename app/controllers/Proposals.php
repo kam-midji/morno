@@ -7,8 +7,8 @@ class Proposals extends Controller {
     private $semesterModel;
 
     public function __construct() {
-        // Authorize access. For now, any logged-in user can access.
-        // We can refine this later if needed.
+        // Only 'user' role can create/edit/delete proposals.
+        // We will check for general login here, and per-method for specific roles/ownership.
         $this->authorize();
 
         $this->proposalModel = $this->model('Proposal');
@@ -21,6 +21,9 @@ class Proposals extends Controller {
      * Shows the form to add a new proposal, and handles form submission.
      */
     public function add() {
+        // Only users can add proposals
+        $this->authorize(['user']);
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
@@ -79,6 +82,69 @@ class Proposals extends Controller {
             ];
 
             $this->view('proposals/add', $data);
+        }
+    }
+
+    public function edit($id) {
+        $proposal = $this->proposalModel->getProposalDetails($id);
+
+        if (!$proposal || $proposal->user_id != Session::get('user_id') || $proposal->status != 'pending') {
+            header('location: index.php?url=dashboard');
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $gregorian_datetime = jalaliToGregorian($_POST['event_datetime']);
+
+            $data = [
+                'id' => $id,
+                'title' => trim($_POST['title']),
+                'event_datetime' => $gregorian_datetime,
+                'audiences' => $_POST['audiences'] ?? [],
+                'organizers' => $_POST['organizers'] ?? [],
+                'objective' => trim($_POST['objective']),
+                'priority' => $_POST['priority'],
+            ];
+
+            if ($this->proposalModel->update($data)) {
+                header('location: index.php?url=dashboard');
+            } else {
+                die('Something went wrong');
+            }
+        } else {
+            $data = [
+                'id' => $id,
+                'title' => $proposal->title,
+                'objective' => $proposal->objective,
+                'priority' => $proposal->priority,
+                'event_datetime_jalali' => jDateTime::date('Y/m/d H:i:s', strtotime($proposal->event_datetime)),
+                'all_audiences' => $this->audienceModel->getAll(),
+                'selected_audiences' => $proposal->audiences,
+                'all_organizers' => $this->organizerModel->getAll(),
+                'selected_organizers' => $proposal->organizers
+            ];
+            $this->view('proposals/edit', $data);
+        }
+    }
+
+    public function delete($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $proposal = $this->proposalModel->getById($id);
+
+            // Check for owner and status
+            if ($proposal->user_id != Session::get('user_id') || $proposal->status != 'pending') {
+                header('location: index.php?url=dashboard');
+                exit();
+            }
+
+            if ($this->proposalModel->delete($id)) { // We need a delete method
+                header('location: index.php?url=dashboard');
+            } else {
+                die('Something went wrong');
+            }
+        } else {
+            header('location: index.php?url=dashboard');
         }
     }
 }

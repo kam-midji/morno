@@ -5,8 +5,8 @@ class Director extends Controller {
     private $semesterModel;
 
     public function __construct() {
-        // Authorize access for Director and Admin
-        $this->authorize(['director', 'admin']);
+        // Authorize access for Director ONLY
+        $this->authorize(['director']);
 
         $this->proposalModel = $this->model('Proposal');
         $this->semesterModel = $this->model('Semester');

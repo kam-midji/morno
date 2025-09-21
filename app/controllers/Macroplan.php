@@ -5,8 +5,8 @@ class Macroplan extends Controller {
     private $semesterModel;
 
     public function __construct() {
-        // Authorize access for Director, Assessor, and Admin
-        $this->authorize(['director', 'assessor', 'admin']);
+        // Authorize access for Director and Assessor
+        $this->authorize(['director', 'assessor']);
 
         $this->macroPlanModel = $this->model('MacroPlan');
         $this->semesterModel = $this->model('Semester');
