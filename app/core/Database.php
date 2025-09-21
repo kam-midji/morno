@@ -5,10 +5,10 @@ class Database {
     // --- IMPORTANT ---
     // These are placeholders. In a real application, these should be moved
     // to a configuration file that is NOT committed to version control.
-    private $host = '127.0.0.1'; // or 'localhost'
-    private $db_name = 'madreseh_planner';
-    private $username = 'root';
-    private $password = 'password';
+    private $host = 'localhost';
+    private $db_name = 'morno';
+    private $username = 'morno';
+    private $password = 'morno1234';
     // --- /IMPORTANT ---
 
     private static $instance = null;

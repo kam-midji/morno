@@ -6,10 +6,10 @@
 // --- Configuration ---
 // This should be the only place you need to change database settings for the setup.
 // Make sure these match the credentials in app/core/Database.php
-$db_host = '127.0.0.1';
-$db_name = 'madreseh_planner';
-$db_user = 'root';
-$db_pass = 'password';
+$db_host = 'localhost';
+$db_name = 'morno';
+$db_user = 'morno';
+$db_pass = 'morno1234';
 $admin_pass = 'admin123'; // Default password for the admin user
 
 echo "<pre>"; // Use <pre> for better formatting in browser

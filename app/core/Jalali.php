@@ -47,12 +47,9 @@ class jDateTime
     /**
      * Defaults
      */
-    private static $jalali   = true; //Use Jalali Date, If set to false, falls b
-ack to gregorian
-    private static $convert  = true; //Convert numbers to Farsi characters in ut
-f-8
-    private static $timezone = null; //Timezone String e.g Asia/Tehran, Defaults
- to Server Timezone Settings
+    private static $jalali   = true; //Use Jalali Date, If set to false, falls back to gregorian
+    private static $convert  = true; //Convert numbers to Farsi characters in utf-8
+    private static $timezone = null; //Timezone String e.g Asia/Tehran, Defaults to Server Timezone Settings
     private static $temp = array();
 
     /**
