@@ -19,14 +19,15 @@ class Proposal {
 
             // 1. Insert into proposals table
             $stmt = $this->db->prepare(
-                "INSERT INTO proposals (user_id, semester_id, title, event_datetime, objective, priority)
-                 VALUES (:user_id, :semester_id, :title, :event_datetime, :objective, :priority)"
+                "INSERT INTO proposals (user_id, semester_id, title, event_datetime, event_end_datetime, objective, priority)
+                 VALUES (:user_id, :semester_id, :title, :event_datetime, :event_end_datetime, :objective, :priority)"
             );
             $stmt->execute([
                 ':user_id' => $data['user_id'],
                 ':semester_id' => $data['semester_id'],
                 ':title' => $data['title'],
                 ':event_datetime' => $data['event_datetime'],
+                ':event_end_datetime' => $data['event_end_datetime'],
                 ':objective' => $data['objective'],
                 ':priority' => $data['priority']
             ]);
@@ -194,13 +195,14 @@ class Proposal {
 
             // 1. Update proposals table
             $stmt = $this->db->prepare(
-                "UPDATE proposals SET title = :title, event_datetime = :event_datetime, objective = :objective, priority = :priority
+                "UPDATE proposals SET title = :title, event_datetime = :event_datetime, event_end_datetime = :event_end_datetime, objective = :objective, priority = :priority
                  WHERE id = :id"
             );
             $stmt->execute([
                 ':id' => $data['id'],
                 ':title' => $data['title'],
                 ':event_datetime' => $data['event_datetime'],
+                ':event_end_datetime' => $data['event_end_datetime'],
                 ':objective' => $data['objective'],
                 ':priority' => $data['priority']
             ]);

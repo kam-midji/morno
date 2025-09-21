@@ -21,8 +21,13 @@
         </div>
 
         <div class="form-group">
-            <label for="event_datetime"><?php echo __('event_time'); ?></label>
+            <label for="event_datetime">زمان شروع</label>
             <input type="text" id="event_datetime" name="event_datetime" value="<?php echo htmlspecialchars($data['event_datetime_jalali'] ?? ''); ?>" data-jdp data-jdp-time required>
+        </div>
+
+        <div class="form-group">
+            <label for="event_end_datetime">زمان پایان</label>
+            <input type="text" id="event_end_datetime" name="event_end_datetime" value="<?php echo htmlspecialchars($data['event_end_datetime_jalali'] ?? ''); ?>" data-jdp data-jdp-time>
         </div>
 
         <div class="form-group">

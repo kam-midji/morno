@@ -48,6 +48,7 @@ CREATE TABLE `proposals` (
   `semester_id` INT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `event_datetime` DATETIME NOT NULL,
+  `event_end_datetime` DATETIME NULL,
   `objective` TEXT NOT NULL,
   `priority` ENUM('high', 'medium', 'low') NOT NULL,
   `status` ENUM('pending', 'approved') NOT NULL DEFAULT 'pending',

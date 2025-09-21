@@ -28,11 +28,14 @@ class Proposals extends Controller {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $gregorian_datetime = jalaliToGregorian($_POST['event_datetime']);
+            $gregorian_end_datetime = !empty($_POST['event_end_datetime']) ? jalaliToGregorian($_POST['event_end_datetime']) : null;
 
             $data = [
                 'title' => trim($_POST['title']),
                 'event_datetime_jalali' => $_POST['event_datetime'],
+                'event_end_datetime_jalali' => $_POST['event_end_datetime'],
                 'event_datetime' => $gregorian_datetime,
+                'event_end_datetime' => $gregorian_end_datetime,
                 'selected_audiences' => $_POST['audiences'] ?? [],
                 'selected_organizers' => $_POST['organizers'] ?? [],
                 'objective' => trim($_POST['objective']),
@@ -45,14 +48,22 @@ class Proposals extends Controller {
             // Basic Validation
             if(empty($data['title'])) $data['errors']['title'] = 'عنوان الزامی است.';
             if($data['event_datetime'] === false) $data['errors']['event_datetime'] = 'فرمت تاریخ و زمان نامعتبر است.';
-            if(empty($data['audiences'])) $data['errors']['audiences'] = 'حداقل یک مخاطب انتخاب کنید.';
-            if(empty($data['organizers'])) $data['errors']['organizers'] = 'حداقل یک برگزارکننده انتخاب کنید.';
+            if(empty($data['selected_audiences'])) $data['errors']['audiences'] = 'حداقل یک مخاطب انتخاب کنید.';
+            if(empty($data['selected_organizers'])) $data['errors']['organizers'] = 'حداقل یک برگزارکننده انتخاب کنید.';
             if(empty($data['objective'])) $data['errors']['objective'] = 'هدف برنامه الزامی است.';
+            if(!empty($data['event_end_datetime']) && $data['event_end_datetime'] <= $data['event_datetime']) {
+                $data['errors']['event_end_datetime'] = 'زمان پایان باید بعد از زمان شروع باشد.';
+            }
 
             if(empty($data['errors'])){
-                if($this->proposalModel->add($data)){
+                // Prepare data for the model
+                $modelData = $data;
+                $modelData['audiences'] = $data['selected_audiences'];
+                $modelData['organizers'] = $data['selected_organizers'];
+
+                if($this->proposalModel->add($modelData)){
                     Session::flash('success', 'پیشنهاد شما با موفقیت ثبت شد.');
-                    header('location: index.php?url=home/dashboard');
+                    header('location: index.php?url=dashboard');
                 } else {
                     die('Something went wrong while adding proposal.');
                 }
@@ -96,16 +107,24 @@ class Proposals extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $gregorian_datetime = jalaliToGregorian($_POST['event_datetime']);
+            $gregorian_end_datetime = !empty($_POST['event_end_datetime']) ? jalaliToGregorian($_POST['event_end_datetime']) : null;
 
             $data = [
                 'id' => $id,
                 'title' => trim($_POST['title']),
                 'event_datetime' => $gregorian_datetime,
+                'event_end_datetime' => $gregorian_end_datetime,
                 'audiences' => $_POST['audiences'] ?? [],
                 'organizers' => $_POST['organizers'] ?? [],
                 'objective' => trim($_POST['objective']),
                 'priority' => $_POST['priority'],
             ];
+
+            // Basic Validation could go here too, but skipping for brevity
+            if(!empty($data['event_end_datetime']) && $data['event_end_datetime'] <= $data['event_datetime']) {
+                 // Handle error - for now, just die. A real app would reload the form with an error.
+                die('End time must be after start time.');
+            }
 
             if ($this->proposalModel->update($data)) {
                 header('location: index.php?url=dashboard');

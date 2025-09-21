@@ -48,10 +48,17 @@ class Director extends Controller {
     private function detectConflicts($pendingProposals, $allProposals) {
         foreach ($pendingProposals as $pending) {
             $pending->conflicts = [];
+            $startA = strtotime($pending->event_datetime);
+            $endA = !empty($pending->event_end_datetime) ? strtotime($pending->event_end_datetime) : $startA;
+
             foreach ($allProposals as $other) {
                 if ($pending->id == $other->id) continue;
 
-                if ($pending->event_datetime == $other->event_datetime) {
+                $startB = strtotime($other->event_datetime);
+                $endB = !empty($other->event_end_datetime) ? strtotime($other->event_end_datetime) : $startB;
+
+                // Check for time range overlap
+                if ($startA < $endB && $endA > $startB) {
                     $audienceConflict = !empty(array_intersect($pending->audiences, $other->audiences));
                     $organizerConflict = !empty(array_intersect($pending->organizers, $other->organizers));
 
