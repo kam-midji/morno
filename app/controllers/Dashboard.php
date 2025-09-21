@@ -6,7 +6,8 @@ class Dashboard extends Controller {
     private $semesterModel;
 
     public function __construct() {
-        $this->authorize();
+        // This dashboard is for the 'user' role only.
+        $this->authorize(['user']);
         $this->proposalModel = $this->model('Proposal');
         $this->macroPlanModel = $this->model('MacroPlan');
         $this->semesterModel = $this->model('Semester');

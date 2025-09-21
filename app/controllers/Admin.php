@@ -16,10 +16,13 @@ class Admin extends Controller {
     }
 
     /**
-     * Default method, redirects to user management.
+     * Default method, shows the admin dashboard.
      */
     public function index() {
-        header('location: index.php?url=admin/users');
+        $data = [
+            'title' => 'داشبورد ادمین'
+        ];
+        $this->view('admin/index', $data);
     }
 
     /**

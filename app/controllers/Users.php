@@ -71,8 +71,23 @@ class Users extends Controller {
         Session::set('user_id', $user->id);
         Session::set('username', $user->username);
         Session::set('user_role', $user->role);
-        // Redirect to dashboard
-        header('location: index.php?url=dashboard');
+
+        // Redirect based on role
+        switch ($user->role) {
+            case 'admin':
+                header('location: index.php?url=admin');
+                break;
+            case 'director':
+                header('location: index.php?url=director');
+                break;
+            case 'assessor':
+                header('location: index.php?url=schedule');
+                break;
+            case 'user':
+            default:
+                header('location: index.php?url=dashboard');
+                break;
+        }
     }
 
     /**
