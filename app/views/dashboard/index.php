@@ -18,6 +18,13 @@
             <a href="index.php?url=dashboard/index/<?php echo $nextWeek; ?>" class="btn btn-primary">هفته بعد &gt;</a>
         </div>
 
+        <!-- View Toggle for Mobile -->
+        <div class="view-toggle">
+            <button id="show-grid-btn" class="btn btn-secondary">نمایش جدولی</button>
+            <button id="show-agenda-btn" class="btn btn-primary">نمایش لیستی</button>
+        </div>
+
+        <!-- Weekly Grid View (Default for Desktop) -->
         <div class="weekly-grid">
             <?php
             $days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
@@ -28,8 +35,7 @@
             <div class="day-column">
                 <div class="day-header"><?php echo $days[$i]; ?><br><small><?php echo jDateTime::date('Y/m/d', $currentDayTimestamp); ?></small></div>
 
-                <?php // Approved Proposals
-                foreach ($data['approved_proposals'] as $proposal):
+                <?php foreach ($data['approved_proposals'] as $proposal):
                     if (date('Y-m-d', strtotime($proposal->event_datetime)) == $currentDay): ?>
                     <div class="event event-approved">
                         <div class="event-title"><?php echo htmlspecialchars($proposal->title); ?></div>
@@ -37,8 +43,7 @@
                     </div>
                 <?php endif; endforeach; ?>
 
-                <?php // Pending Proposals for current user
-                foreach ($data['pending_proposals'] as $proposal):
+                <?php foreach ($data['pending_proposals'] as $proposal):
                         if (date('Y-m-d', strtotime($proposal->event_datetime)) == $currentDay): ?>
                     <div class="event event-pending">
                         <div class="event-title"><?php echo htmlspecialchars($proposal->title); ?> (در انتظار)</div>
@@ -46,9 +51,33 @@
                         <div><a href="index.php?url=proposals/edit/<?php echo $proposal->id; ?>">ویرایش</a></div>
                     </div>
                 <?php endif; endforeach; ?>
-
             </div>
             <?php endfor; ?>
+        </div>
+
+        <!-- Agenda List View (Default for Mobile) -->
+        <div class="agenda-view">
+            <?php
+                $all_events = array_merge($data['approved_proposals'], $data['pending_proposals']);
+                usort($all_events, function($a, $b) {
+                    return strtotime($a->event_datetime) - strtotime($b->event_datetime);
+                });
+            ?>
+            <?php if(empty($all_events)): ?>
+                <p>هیچ برنامه‌ای برای این هفته وجود ندارد.</p>
+            <?php else: ?>
+                <?php foreach ($all_events as $event): ?>
+                    <div class="event <?php echo $event->status == 'approved' ? 'event-approved' : 'event-pending'; ?>">
+                        <div class="event-title"><?php echo htmlspecialchars($event->title); ?> <?php echo $event->status == 'pending' ? '(در انتظار)' : ''; ?></div>
+                        <div class="event-time">
+                            <?php echo jDateTime::date('l Y/m/d - H:i', strtotime($event->event_datetime)); ?>
+                        </div>
+                         <?php if($event->status == 'pending'): ?>
+                            <div><a href="index.php?url=proposals/edit/<?php echo $event->id; ?>">ویرایش</a></div>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 
