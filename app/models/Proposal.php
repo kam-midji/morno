@@ -246,4 +246,17 @@ class Proposal {
             return false;
         }
     }
+
+    public function getAllProposals() {
+        try {
+            $stmt = $this->db->query(
+                "SELECT p.*, u.full_name as author_name FROM proposals p
+                 JOIN users u ON p.user_id = u.id
+                 ORDER BY p.event_datetime DESC"
+            );
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
 }

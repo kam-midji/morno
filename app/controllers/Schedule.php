@@ -26,7 +26,7 @@ class Schedule extends Controller {
         $data = [
             'week_start_date' => $weekStartDate,
             'week_end_date' => $weekEndDate,
-            'proposals' => $approvedProposals
+            'proposals' => prepareProposalsForGrid($approvedProposals, $weekStartDate)
         ];
 
         $this->view('schedule/index', $data);

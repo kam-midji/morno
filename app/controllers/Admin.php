@@ -272,8 +272,16 @@ class Admin extends Controller {
         header('location: index.php?url=admin/organizers');
     }
 
+    private function authorizeAdminOrDirector() {
+        if (!in_array(Session::get('user_role'), ['admin', 'director'])) {
+            header('location: index.php?url=dashboard');
+            exit();
+        }
+    }
+
     // --- Semester Management ---
     public function semesters() {
+        $this->authorizeAdminOrDirector();
         $semesters = $this->semesterModel->getAll();
         $data = [
             'semesters' => $semesters
@@ -282,6 +290,7 @@ class Admin extends Controller {
     }
 
     public function addSemester() {
+        $this->authorizeAdminOrDirector();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
@@ -310,6 +319,7 @@ class Admin extends Controller {
     }
 
     public function editSemester($id) {
+        $this->authorizeAdminOrDirector();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
@@ -340,6 +350,7 @@ class Admin extends Controller {
     }
 
     public function archiveSemester($id) {
+        $this->authorizeAdminOrDirector();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->semesterModel->archive($id);
             header('location: index.php?url=admin/semesters');

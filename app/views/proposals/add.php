@@ -11,17 +11,29 @@
         <?php if (isset($data['errors']['title'])): ?><span class="error-text"><?php echo $data['errors']['title']; ?></span><?php endif; ?>
     </div>
 
-    <div class="form-group">
-                <label for="event_datetime">زمان شروع</label>
-        <input type="text" id="event_datetime" name="event_datetime" value="<?php echo htmlspecialchars($data['event_datetime_jalali'] ?? ''); ?>" data-jdp data-jdp-time required>
-            <?php if (isset($data['errors']['event_datetime'])): ?><span class="error-text"><?php echo $data['errors']['event_datetime']; ?></span><?php endif; ?>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="start_date">تاریخ شروع</label>
+                    <input type="text" id="start_date" name="start_date" data-jdp required>
+                </div>
+                <div class="form-group">
+                    <label for="start_time">زمان شروع</label>
+                    <input type="time" id="start_time" name="start_time" required>
+                </div>
     </div>
+             <?php if (isset($data['errors']['event_datetime'])): ?><span class="error-text"><?php echo $data['errors']['event_datetime']; ?></span><?php endif; ?>
 
-            <div class="form-group">
-                <label for="event_end_datetime">زمان پایان</label>
-                <input type="text" id="event_end_datetime" name="event_end_datetime" value="<?php echo htmlspecialchars($data['event_end_datetime_jalali'] ?? ''); ?>" data-jdp data-jdp-time>
-                 <?php if (isset($data['errors']['event_end_datetime'])): ?><span class="error-text"><?php echo $data['errors']['event_end_datetime']; ?></span><?php endif; ?>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="end_date">تاریخ پایان</label>
+                    <input type="text" id="end_date" name="end_date" data-jdp>
+                </div>
+                <div class="form-group">
+                    <label for="end_time">زمان پایان</label>
+                    <input type="time" id="end_time" name="end_time">
+                </div>
             </div>
+             <?php if (isset($data['errors']['event_end_datetime'])): ?><span class="error-text"><?php echo $data['errors']['event_end_datetime']; ?></span><?php endif; ?>
 
     <div class="form-group">
         <label><?php echo __('audience'); ?></label>

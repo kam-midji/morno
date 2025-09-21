@@ -81,7 +81,7 @@ class Users extends Controller {
                 header('location: index.php?url=director');
                 break;
             case 'assessor':
-                header('location: index.php?url=schedule');
+                header('location: index.php?url=assessor');
                 break;
             case 'user':
             default:

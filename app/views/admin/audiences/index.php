@@ -3,6 +3,7 @@
     <a href="index.php?url=admin/addAudience" class="btn btn-primary">افزودن مخاطب جدید</a>
 </div>
 
+<div class="table-responsive-wrapper">
 <table>
     <thead>
         <tr>
@@ -24,3 +25,4 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+</div>

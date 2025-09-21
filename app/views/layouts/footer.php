@@ -11,7 +11,7 @@
         });
 
         // View Toggler Logic
-        const gridView = document.querySelector('.weekly-grid');
+        const gridView = document.querySelector('.calendar-grid-container');
         const agendaView = document.querySelector('.agenda-view');
         const gridBtn = document.getElementById('show-grid-btn');
         const agendaBtn = document.getElementById('show-agenda-btn');
@@ -53,6 +53,34 @@
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Auto-set end time based on start time
+        const startTimeInput = document.getElementById('start_time');
+        const endTimeInput = document.getElementById('end_time');
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+
+        if(startTimeInput && endTimeInput && startDateInput && endDateInput) {
+            startTimeInput.addEventListener('change', () => {
+                const startTime = startTimeInput.value;
+                if(startTime) {
+                    const [hours, minutes] = startTime.split(':');
+                    const startDate = new Date(); // Dummy date object
+                    startDate.setHours(parseInt(hours));
+                    startDate.setMinutes(parseInt(minutes));
+                    startDate.setHours(startDate.getHours() + 1); // Add one hour
+
+                    const endHours = String(startDate.getHours()).padStart(2, '0');
+                    const endMinutes = String(startDate.getMinutes()).padStart(2, '0');
+
+                    endTimeInput.value = `${endHours}:${endMinutes}`;
+                    // Also set the end date to be the same as the start date
+                    if(startDateInput.value) {
+                        endDateInput.value = startDateInput.value;
+                    }
                 }
             });
         }

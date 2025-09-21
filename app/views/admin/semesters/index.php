@@ -3,6 +3,7 @@
     <a href="index.php?url=admin/addSemester" class="btn btn-primary">افزودن ترم جدید</a>
 </div>
 
+<div class="table-responsive-wrapper">
 <table>
     <thead>
         <tr>
@@ -40,3 +41,4 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+</div>

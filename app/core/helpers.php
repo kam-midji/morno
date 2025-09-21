@@ -63,3 +63,44 @@ function jalaliToGregorian($jalaliDateTime) {
 
     return sprintf('%04d-%02d-%02d', $g_y, $g_m, $g_d) . ' ' . $timePart;
 }
+
+/**
+ * Prepares an array of proposal objects for rendering in a time-slot grid.
+ * Adds grid_column, grid_row_start, and grid_row_span properties to each object.
+ *
+ * @param array $proposals The array of proposal objects from the database.
+ * @param string $weekStartDate The start date of the week being displayed ('Y-m-d').
+ * @param int $intervalMinutes The duration of each time slot in minutes (e.g., 30).
+ * @param string $dayStartTime The start time of the grid's day (e.g., '07:00').
+ * @return array The processed array of proposals.
+ */
+function prepareProposalsForGrid($proposals, $weekStartDate, $intervalMinutes = 30, $dayStartTime = '07:00') {
+    $gridStartHour = intval(explode(':', $dayStartTime)[0]);
+    $gridStartMinute = intval(explode(':', $dayStartTime)[1]);
+
+    foreach ($proposals as $proposal) {
+        $eventStart = new DateTime($proposal->event_datetime);
+        $eventEnd = !empty($proposal->event_end_datetime) ? new DateTime($proposal->event_end_datetime) : (clone $eventStart)->modify('+1 hour');
+
+        // Calculate grid_column (1-7 for Sat-Fri)
+        $dayOfWeek = (int)$eventStart->format('w'); // 0=Sun, 6=Sat
+        $proposal->grid_column = (($dayOfWeek + 1) % 7) + 1; // 1=Sat, 2=Sun, ..., 7=Fri
+
+        // Calculate grid_row_start
+        $startMinutesIntoDay = ($eventStart->format('G') * 60) + (int)$eventStart->format('i');
+        $gridStartMinutesIntoDay = ($gridStartHour * 60) + $gridStartMinute;
+        $minutesFromGridStart = $startMinutesIntoDay - $gridStartMinutesIntoDay;
+        $proposal->grid_row_start = ($minutesFromGridStart / $intervalMinutes) + 1; // +1 because grid rows are 1-based
+
+        // Calculate grid_row_span
+        $durationMinutes = ($eventEnd->getTimestamp() - $eventStart->getTimestamp()) / 60;
+        $proposal->grid_row_span = max(1, $durationMinutes / $intervalMinutes);
+
+        // Ensure events don't start before the grid time
+        if($proposal->grid_row_start < 1) {
+            $proposal->grid_row_span -= (1 - $proposal->grid_row_start);
+            $proposal->grid_row_start = 1;
+        }
+    }
+    return $proposals;
+}

@@ -6,6 +6,7 @@
     </div>
 </div>
 
+<div class="table-responsive-wrapper">
 <table>
     <thead>
         <tr>
@@ -29,3 +30,4 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+</div>

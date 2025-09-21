@@ -43,8 +43,8 @@ class Dashboard extends Controller {
         $data = [
             'week_start_date' => $weekStartDate,
             'week_end_date' => $weekEndDate,
-            'approved_proposals' => $approvedProposals,
-            'pending_proposals' => $pendingProposals,
+            'approved_proposals' => prepareProposalsForGrid($approvedProposals, $weekStartDate),
+            'pending_proposals' => prepareProposalsForGrid($pendingProposals, $weekStartDate),
             'macro_plan_events' => $macroPlanEvents,
             'current_semester' => $currentSemester
         ];

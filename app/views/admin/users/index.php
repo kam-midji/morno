@@ -3,9 +3,10 @@
     <a href="index.php?url=admin/addUser" class="btn btn-primary">افزودن کاربر جدید</a>
 </div>
 
-<table>
-    <thead>
-        <tr>
+<div class="table-responsive-wrapper">
+    <table>
+        <thead>
+            <tr>
             <th>نام کامل</th>
             <th>نام کاربری</th>
             <th>نقش</th>
@@ -26,3 +27,4 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+</div>

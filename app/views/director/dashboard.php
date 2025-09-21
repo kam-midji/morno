@@ -1,6 +1,10 @@
 <div class="header">
     <h1>داشبورد مدیر - بررسی پیشنهادات</h1>
-    <a href="index.php?url=dashboard" class="btn btn-secondary">بازگشت به داشبورد کاربر</a>
+    <div>
+        <a href="index.php?url=admin/semesters" class="btn btn-secondary">مدیریت ترم‌ها</a>
+        <a href="index.php?url=macroplan" class="btn btn-secondary">مدیریت برنامه کلان</a>
+        <a href="index.php?url=dashboard" class="btn btn-secondary">نمای کاربر</a>
+    </div>
 </div>
 
 <div class="week-navigation">

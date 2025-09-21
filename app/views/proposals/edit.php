@@ -20,14 +20,26 @@
             <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($data['title'] ?? ''); ?>" required>
         </div>
 
-        <div class="form-group">
-            <label for="event_datetime">زمان شروع</label>
-            <input type="text" id="event_datetime" name="event_datetime" value="<?php echo htmlspecialchars($data['event_datetime_jalali'] ?? ''); ?>" data-jdp data-jdp-time required>
+        <div class="form-group-inline">
+            <div class="form-group">
+                <label for="start_date">تاریخ شروع</label>
+                <input type="text" id="start_date" name="start_date" data-jdp required value="<?php echo explode(' ', $data['event_datetime_jalali'])[0] ?? ''; ?>">
+            </div>
+            <div class="form-group">
+                <label for="start_time">زمان شروع</label>
+                <input type="time" id="start_time" name="start_time" required value="<?php echo explode(' ', $data['event_datetime_jalali'])[1] ?? ''; ?>">
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="event_end_datetime">زمان پایان</label>
-            <input type="text" id="event_end_datetime" name="event_end_datetime" value="<?php echo htmlspecialchars($data['event_end_datetime_jalali'] ?? ''); ?>" data-jdp data-jdp-time>
+        <div class="form-group-inline">
+            <div class="form-group">
+                <label for="end_date">تاریخ پایان</label>
+                <input type="text" id="end_date" name="end_date" data-jdp value="<?php echo explode(' ', $data['event_end_datetime_jalali'])[0] ?? ''; ?>">
+            </div>
+            <div class="form-group">
+                <label for="end_time">زمان پایان</label>
+                <input type="time" id="end_time" name="end_time" value="<?php echo explode(' ', $data['event_end_datetime_jalali'])[1] ?? ''; ?>">
+            </div>
         </div>
 
         <div class="form-group">

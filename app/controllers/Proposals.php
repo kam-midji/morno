@@ -27,13 +27,16 @@ class Proposals extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-            $gregorian_datetime = jalaliToGregorian($_POST['event_datetime']);
-            $gregorian_end_datetime = !empty($_POST['event_end_datetime']) ? jalaliToGregorian($_POST['event_end_datetime']) : null;
+            $start_datetime_jalali = trim($_POST['start_date'] . ' ' . $_POST['start_time']);
+            $end_datetime_jalali = !empty($_POST['end_date']) && !empty($_POST['end_time']) ? trim($_POST['end_date'] . ' ' . $_POST['end_time']) : null;
+
+            $gregorian_datetime = jalaliToGregorian($start_datetime_jalali);
+            $gregorian_end_datetime = !empty($end_datetime_jalali) ? jalaliToGregorian($end_datetime_jalali) : null;
 
             $data = [
                 'title' => trim($_POST['title']),
-                'event_datetime_jalali' => $_POST['event_datetime'],
-                'event_end_datetime_jalali' => $_POST['event_end_datetime'],
+                'event_datetime_jalali' => $start_datetime_jalali,
+                'event_end_datetime_jalali' => $end_datetime_jalali,
                 'event_datetime' => $gregorian_datetime,
                 'event_end_datetime' => $gregorian_end_datetime,
                 'selected_audiences' => $_POST['audiences'] ?? [],
@@ -106,8 +109,12 @@ class Proposals extends Controller {
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $gregorian_datetime = jalaliToGregorian($_POST['event_datetime']);
-            $gregorian_end_datetime = !empty($_POST['event_end_datetime']) ? jalaliToGregorian($_POST['event_end_datetime']) : null;
+
+            $start_datetime_jalali = trim($_POST['start_date'] . ' ' . $_POST['start_time']);
+            $end_datetime_jalali = !empty($_POST['end_date']) && !empty($_POST['end_time']) ? trim($_POST['end_date'] . ' ' . $_POST['end_time']) : null;
+
+            $gregorian_datetime = jalaliToGregorian($start_datetime_jalali);
+            $gregorian_end_datetime = !empty($end_datetime_jalali) ? jalaliToGregorian($end_datetime_jalali) : null;
 
             $data = [
                 'id' => $id,
@@ -138,6 +145,7 @@ class Proposals extends Controller {
                 'objective' => $proposal->objective,
                 'priority' => $proposal->priority,
                 'event_datetime_jalali' => jDateTime::date('Y/m/d H:i:s', strtotime($proposal->event_datetime)),
+                'event_end_datetime_jalali' => !empty($proposal->event_end_datetime) ? jDateTime::date('Y/m/d H:i:s', strtotime($proposal->event_end_datetime)) : '',
                 'all_audiences' => $this->audienceModel->getAll(),
                 'selected_audiences' => $proposal->audiences,
                 'all_organizers' => $this->organizerModel->getAll(),
