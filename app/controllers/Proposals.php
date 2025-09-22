@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Proposals')) {
 class Proposals extends Controller {
     private $proposalModel;
     private $audienceModel;
@@ -174,4 +175,5 @@ class Proposals extends Controller {
             header('location: index.php?url=dashboard');
         }
     }
+}
 }

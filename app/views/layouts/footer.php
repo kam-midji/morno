@@ -115,8 +115,5 @@
             </form>
         </div>
     </div>
-
-    <!-- Floating Action Button -->
-    <button id="fab-add-proposal" class="fab">+</button>
 </body>
 </html>

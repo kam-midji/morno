@@ -1,9 +1,10 @@
 <?php
 
-class Audience {
-    private $db;
+if (!class_exists('Audience')) {
+    class Audience {
+        private $db;
 
-    public function __construct() {
+        public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
@@ -52,4 +53,5 @@ class Audience {
             return false;
         }
     }
+}
 }

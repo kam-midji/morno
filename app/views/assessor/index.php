@@ -15,7 +15,11 @@
     </thead>
     <tbody>
         <?php foreach ($data['proposals'] as $proposal): ?>
-        <tr>
+        <tr class="clickable-row"
+            data-title="<?php echo htmlspecialchars($proposal->title); ?>"
+            data-author="<?php echo htmlspecialchars($proposal->author_name); ?>"
+            data-time="<?php echo jDateTime::date('l Y/m/d - H:i', strtotime($proposal->event_datetime)); ?>"
+            data-objective="<?php echo htmlspecialchars($proposal->objective); ?>">
             <td><?php echo htmlspecialchars($proposal->title); ?></td>
             <td><?php echo htmlspecialchars($proposal->author_name); ?></td>
             <td><?php echo jDateTime::date('Y/m/d H:i', strtotime($proposal->event_datetime)); ?></td>
@@ -37,6 +41,50 @@
 </table>
 </div>
 
+<!-- Details Modal -->
+<div id="details-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <span class="modal-close-btn">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p><strong>ارسال کننده:</strong> <span id="modal-author"></span></p>
+        <p><strong>زمان:</strong> <span id="modal-time"></span></p>
+        <div class="objective">
+            <strong>هدف:</strong>
+            <p id="modal-objective"></p>
+        </div>
+    </div>
+</div>
+
 <style>
-.status-pending { color: #ffc107; font-weight: bold; }
+.status-pending { color: var(--warning-color); font-weight: bold; }
+.clickable-row { cursor: pointer; }
+.clickable-row:hover { background-color: #f0f0f0; }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('details-modal');
+    const closeModalBtn = modal.querySelector('.modal-close-btn');
+    const rows = document.querySelectorAll('.clickable-row');
+
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            document.getElementById('modal-title').innerText = row.dataset.title;
+            document.getElementById('modal-author').innerText = row.dataset.author;
+            document.getElementById('modal-time').innerText = row.dataset.time;
+            document.getElementById('modal-objective').innerText = row.dataset.objective;
+            modal.style.display = 'flex';
+        });
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>

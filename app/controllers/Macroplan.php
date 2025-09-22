@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Macroplan')) {
 class Macroplan extends Controller {
     private $macroPlanModel;
     private $semesterModel;
@@ -96,4 +97,5 @@ class Macroplan extends Controller {
             header('location: index.php?url=macroplan');
         }
     }
+}
 }

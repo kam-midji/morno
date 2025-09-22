@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Schedule')) {
 class Schedule extends Controller {
     private $proposalModel;
 
@@ -31,4 +32,5 @@ class Schedule extends Controller {
 
         $this->view('schedule/index', $data);
     }
+}
 }

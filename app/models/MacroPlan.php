@@ -1,9 +1,10 @@
 <?php
 
-class MacroPlan {
-    private $db;
+if (!class_exists('MacroPlan')) {
+    class MacroPlan {
+        private $db;
 
-    public function __construct() {
+        public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
@@ -66,4 +67,5 @@ class MacroPlan {
             return false;
         }
     }
+}
 }

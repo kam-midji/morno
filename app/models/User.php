@@ -1,9 +1,10 @@
 <?php
 
-class User {
-    private $db;
+if (!class_exists('User')) {
+    class User {
+        private $db;
 
-    public function __construct() {
+        public function __construct() {
         // In the future, a dependency injection container would be better,
         // but for now, we get the DB instance directly.
         $this->db = Database::getInstance()->getConnection();
@@ -128,4 +129,5 @@ class User {
             return false;
         }
     }
+}
 }

@@ -1,9 +1,10 @@
 <?php
 
-class Assessor extends Controller {
-    private $proposalModel;
+if (!class_exists('Assessor')) {
+    class Assessor extends Controller {
+        private $proposalModel;
 
-    public function __construct() {
+        public function __construct() {
         // Authorize access for Assessor and Admin
         $this->authorize(['assessor', 'admin']);
         $this->proposalModel = $this->model('Proposal');
@@ -22,4 +23,5 @@ class Assessor extends Controller {
 
         $this->view('assessor/index', $data);
     }
+}
 }

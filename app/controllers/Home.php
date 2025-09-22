@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Home')) {
 class Home extends Controller {
     public function __construct() {
         // Constructor for the Home controller
@@ -15,4 +16,5 @@ class Home extends Controller {
             echo '<a href="index.php?url=users/login">' . __('login') . '</a>';
         }
     }
+}
 }

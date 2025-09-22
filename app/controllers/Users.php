@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Users')) {
 class Users extends Controller {
     private $userModel;
 
@@ -101,4 +102,5 @@ class Users extends Controller {
         header('location: index.php?url=users/login');
     }
 
+}
 }

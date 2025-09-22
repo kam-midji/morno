@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Admin')) {
 class Admin extends Controller {
     private $userModel;
     private $audienceModel;
@@ -7,8 +8,7 @@ class Admin extends Controller {
     private $semesterModel;
 
     public function __construct() {
-        // Authorize admin access for all methods in this controller
-        $this->authorize(['admin']);
+        // Authorization is now handled in each method to allow for different permission levels.
         $this->userModel = $this->model('User');
         $this->audienceModel = $this->model('Audience');
         $this->organizerModel = $this->model('Organizer');
@@ -29,6 +29,7 @@ class Admin extends Controller {
      * User management page.
      */
     public function users() {
+        $this->authorize(['admin']);
         $users = $this->userModel->getUsers();
         $data = [
             'users' => $users
@@ -40,6 +41,7 @@ class Admin extends Controller {
      * Add a new user.
      */
     public function addUser() {
+        $this->authorize(['admin']);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
@@ -103,6 +105,7 @@ class Admin extends Controller {
      * Edit an existing user.
      */
     public function editUser($id) {
+        $this->authorize(['admin']);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
@@ -171,6 +174,7 @@ class Admin extends Controller {
      * Delete a user.
      */
     public function deleteUser($id) {
+        $this->authorize(['admin']);
         // Prevent admin from deleting themselves
         if ($id == Session::get('user_id')) {
             // Maybe set a flash message here
@@ -188,6 +192,7 @@ class Admin extends Controller {
 
     // --- Audience Management ---
     public function audiences() {
+        $this->authorize(['admin']);
         $audiences = $this->audienceModel->getAll();
         $data = [
             'audiences' => $audiences
@@ -196,6 +201,7 @@ class Admin extends Controller {
     }
 
     public function addAudience() {
+        $this->authorize(['admin']);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $name = trim($_POST['name']);
             if (empty($name)) {
@@ -210,6 +216,7 @@ class Admin extends Controller {
     }
 
     public function editAudience($id) {
+        $this->authorize(['admin']);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $name = trim($_POST['name']);
             if (empty($name)) {
@@ -225,12 +232,14 @@ class Admin extends Controller {
     }
 
     public function deleteAudience($id) {
+        $this->authorize(['admin']);
         $this->audienceModel->delete($id);
         header('location: index.php?url=admin/audiences');
     }
 
     // --- Organizer Management ---
     public function organizers() {
+        $this->authorize(['admin']);
         $organizers = $this->organizerModel->getAll();
         $data = [
             'organizers' => $organizers
@@ -239,6 +248,7 @@ class Admin extends Controller {
     }
 
     public function addOrganizer() {
+        $this->authorize(['admin']);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $name = trim($_POST['name']);
             if (empty($name)) {
@@ -253,6 +263,7 @@ class Admin extends Controller {
     }
 
     public function editOrganizer($id) {
+        $this->authorize(['admin']);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $name = trim($_POST['name']);
             if (empty($name)) {
@@ -268,6 +279,7 @@ class Admin extends Controller {
     }
 
     public function deleteOrganizer($id) {
+        $this->authorize(['admin']);
         $this->organizerModel->delete($id);
         header('location: index.php?url=admin/organizers');
     }
@@ -359,4 +371,5 @@ class Admin extends Controller {
             header('location: index.php?url=admin/semesters');
         }
     }
+}
 }

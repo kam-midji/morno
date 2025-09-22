@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Dashboard')) {
 class Dashboard extends Controller {
     private $proposalModel;
     private $macroPlanModel;
@@ -51,4 +52,5 @@ class Dashboard extends Controller {
 
         $this->view('dashboard/index', $data);
     }
+}
 }

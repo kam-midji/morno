@@ -1,9 +1,10 @@
 <?php
 
-class Organizer {
-    private $db;
+if (!class_exists('Organizer')) {
+    class Organizer {
+        private $db;
 
-    public function __construct() {
+        public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
@@ -52,4 +53,5 @@ class Organizer {
             return false;
         }
     }
+}
 }

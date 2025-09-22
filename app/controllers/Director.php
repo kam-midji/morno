@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Director')) {
 class Director extends Controller {
     private $proposalModel;
     private $semesterModel;
@@ -98,4 +99,5 @@ class Director extends Controller {
         header('location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php?url=director'));
         exit();
     }
+}
 }

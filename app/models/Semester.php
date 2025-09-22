@@ -1,9 +1,10 @@
 <?php
 
-class Semester {
-    private $db;
+if (!class_exists('Semester')) {
+    class Semester {
+        private $db;
 
-    public function __construct() {
+        public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
@@ -75,4 +76,5 @@ class Semester {
             return false;
         }
     }
+}
 }

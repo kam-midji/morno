@@ -99,3 +99,6 @@
         <a href="index.php?url=proposals/add" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">+ ایجاد پیشنهاد جدید</a>
     </div>
 </div>
+
+<!-- Floating Action Button -->
+<button id="fab-add-proposal" class="fab">+</button>

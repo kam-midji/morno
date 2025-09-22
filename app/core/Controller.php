@@ -3,6 +3,7 @@
  * Base Controller
  * This loads the models and views
  */
+if (!class_exists('Controller')) {
 class Controller {
     /**
      * Loads a model file.
@@ -58,4 +59,5 @@ class Controller {
             }
         }
     }
+}
 }

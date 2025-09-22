@@ -1,9 +1,10 @@
 <?php
 
-class Proposal {
-    private $db;
+if (!class_exists('Proposal')) {
+    class Proposal {
+        private $db;
 
-    public function __construct() {
+        public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
@@ -259,4 +260,5 @@ class Proposal {
             return [];
         }
     }
+}
 }
