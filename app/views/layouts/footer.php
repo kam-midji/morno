@@ -10,6 +10,15 @@
             format: 'YYYY/MM/DD HH:mm:ss'
         });
 
+        // Initialize time-only picker
+        jalaliDatepicker.startWatch({
+            selector: '[data-jdp-time-only]',
+            time: true,
+            date: false,
+            persianDigits: true,
+            format: 'HH:mm'
+        });
+
         // View Toggler Logic
         const gridView = document.querySelector('.calendar-grid-container');
         const agendaView = document.querySelector('.agenda-view');
@@ -109,8 +118,35 @@
                     <label for="modal-objective">هدف برنامه</label>
                     <textarea id="modal-objective" name="objective" required></textarea>
                 </div>
-                <!-- Hidden fields for audiences, organizers etc. would be needed for full validation -->
-                <!-- Or a simplified submission that requires editing later for full details -->
+                <div class="form-group">
+                    <label for="modal-audiences">مخاطبان</label>
+                    <select id="modal-audiences" name="audiences[]" multiple required>
+                        <?php if (!empty($data['audiences'])): ?>
+                            <?php foreach ($data['audiences'] as $audience): ?>
+                                <option value="<?php echo $audience->id; ?>"><?php echo htmlspecialchars($audience->name); ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modal-organizers">برگزارکنندگان</label>
+                    <select id="modal-organizers" name="organizers[]" multiple required>
+                         <?php if (!empty($data['organizers'])): ?>
+                            <?php foreach ($data['organizers'] as $organizer): ?>
+                                <option value="<?php echo $organizer->id; ?>"><?php echo htmlspecialchars($organizer->name); ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modal-priority">اولویت</label>
+                    <select id="modal-priority" name="priority" required>
+                        <option value="medium" selected>متوسط</option>
+                        <option value="high">زیاد</option>
+                        <option value="low">کم</option>
+                    </select>
+                </div>
+                <input type="hidden" name="current_semester_id" value="<?php echo htmlspecialchars($data['current_semester']->id ?? ''); ?>">
                 <button type="submit" class="btn btn-primary">ثبت</button>
             </form>
         </div>

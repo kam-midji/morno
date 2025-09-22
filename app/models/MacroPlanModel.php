@@ -1,7 +1,7 @@
 <?php
 
-if (!class_exists('MacroPlan')) {
-    class MacroPlan {
+if (!class_exists('MacroPlanModel')) {
+    class MacroPlanModel {
         private $db;
 
         public function __construct() {

@@ -6,12 +6,17 @@ class Dashboard extends Controller {
     private $macroPlanModel;
     private $semesterModel;
 
+    private $audienceModel;
+    private $organizerModel;
+
     public function __construct() {
         // This dashboard is for the 'user' role only.
         $this->authorize(['user']);
         $this->proposalModel = $this->model('Proposal');
-        $this->macroPlanModel = $this->model('MacroPlan');
+        $this->macroPlanModel = $this->model('MacroPlanModel');
         $this->semesterModel = $this->model('Semester');
+        $this->audienceModel = $this->model('Audience');
+        $this->organizerModel = $this->model('Organizer');
     }
 
     /**
@@ -40,6 +45,8 @@ class Dashboard extends Controller {
         $approvedProposals = $this->proposalModel->getApprovedByWeek($weekStartDate, $weekEndDate);
         $pendingProposals = $this->proposalModel->getPendingForUserByWeek(Session::get('user_id'), $weekStartDate, $weekEndDate);
         $macroPlanEvents = $this->macroPlanModel->getBySemester($currentSemester->id);
+        $audiences = $this->audienceModel->getAll();
+        $organizers = $this->organizerModel->getAll();
 
         $data = [
             'week_start_date' => $weekStartDate,
@@ -47,7 +54,9 @@ class Dashboard extends Controller {
             'approved_proposals' => prepareProposalsForGrid($approvedProposals, $weekStartDate),
             'pending_proposals' => prepareProposalsForGrid($pendingProposals, $weekStartDate),
             'macro_plan_events' => $macroPlanEvents,
-            'current_semester' => $currentSemester
+            'current_semester' => $currentSemester,
+            'audiences' => $audiences,
+            'organizers' => $organizers
         ];
 
         $this->view('dashboard/index', $data);

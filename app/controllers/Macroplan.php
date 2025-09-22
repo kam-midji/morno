@@ -9,7 +9,7 @@ class Macroplan extends Controller {
         // Authorize access for Director and Assessor
         $this->authorize(['director', 'assessor']);
 
-        $this->macroPlanModel = $this->model('MacroPlan');
+        $this->macroPlanModel = $this->model('MacroPlanModel');
         $this->semesterModel = $this->model('Semester');
     }
 

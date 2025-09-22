@@ -42,9 +42,18 @@ class Users extends Controller {
                 $loggedInUser = $this->userModel->findByUsername($data['username']);
 
                 if($loggedInUser && password_verify($data['password'], $loggedInUser->password)){
+                    // Check if "Remember Me" is checked
+                    if ($data['remember_me']) {
+                        $token = $this->userModel->createRememberMeToken($loggedInUser->id);
+                        if ($token) {
+                            // Set a cookie with selector and validator
+                            $cookieValue = $token['selector'] . ':' . $token['validator'];
+                            // Set cookie for 30 days, httponly for security
+                            setcookie('remember_me', $cookieValue, time() + (86400 * 30), '/', '', false, true);
+                        }
+                    }
                     // Create Session
                     $this->createUserSession($loggedInUser);
-                    // TODO: Handle "Remember Me"
                 } else {
                     $data['password_err'] = 'نام کاربری یا رمز عبور اشتباه است.';
                     $this->view('users/login', $data);
@@ -95,6 +104,16 @@ class Users extends Controller {
      * Handles user logout.
      */
     public function logout() {
+        // Handle "Remember Me" cookie
+        if (isset($_COOKIE['remember_me'])) {
+            // Delete token from database
+            if (Session::has('user_id')) {
+                $this->userModel->deleteToken(Session::get('user_id'));
+            }
+            // Unset the cookie
+            setcookie('remember_me', '', time() - 3600, '/');
+        }
+
         Session::remove('user_id');
         Session::remove('username');
         Session::remove('user_role');

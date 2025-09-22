@@ -26,10 +26,16 @@ class Proposals extends Controller {
         $this->authorize(['user']);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-            $start_datetime_jalali = trim($_POST['start_date'] . ' ' . $_POST['start_time']);
-            $end_datetime_jalali = !empty($_POST['end_date']) && !empty($_POST['end_time']) ? trim($_POST['end_date'] . ' ' . $_POST['end_time']) : null;
+            // Handle flexible datetime inputs
+            if (!empty($_POST['event_datetime'])) {
+                 $start_datetime_jalali = trim($_POST['event_datetime']);
+                 $end_datetime_jalali = !empty($_POST['event_end_datetime']) ? trim($_POST['event_end_datetime']) : null;
+            } else {
+                 $start_datetime_jalali = trim($_POST['start_date'] . ' ' . $_POST['start_time']);
+                 $end_datetime_jalali = !empty($_POST['end_date']) && !empty($_POST['end_time']) ? trim($_POST['end_date'] . ' ' . $_POST['end_time']) : null;
+            }
 
             $gregorian_datetime = jalaliToGregorian($start_datetime_jalali);
             $gregorian_end_datetime = !empty($end_datetime_jalali) ? jalaliToGregorian($end_datetime_jalali) : null;
@@ -43,7 +49,7 @@ class Proposals extends Controller {
                 'selected_audiences' => $_POST['audiences'] ?? [],
                 'selected_organizers' => $_POST['organizers'] ?? [],
                 'objective' => trim($_POST['objective']),
-                'priority' => $_POST['priority'],
+                'priority' => $_POST['priority'] ?? 'medium',
                 'user_id' => Session::get('user_id'),
                 'semester_id' => $_POST['current_semester_id'],
                 'errors' => []

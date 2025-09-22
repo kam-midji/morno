@@ -4,24 +4,21 @@
 // This script initializes the database. Run it once.
 
 // --- Configuration ---
-// This should be the only place you need to change database settings for the setup.
-// Make sure these match the credentials in app/core/Database.php
-$db_host = 'localhost';
-$db_name = 'morno';
-$db_user = 'morno';
-$db_pass = 'morno1234';
+// Load the main configuration file
+require_once 'config/config.php';
+
 $admin_pass = 'admin123'; // Default password for the admin user
 
 echo "<pre>"; // Use <pre> for better formatting in browser
 
 // --- 1. Connect to MySQL and Create Database ---
 try {
-    $pdo = new PDO("mysql:host=$db_host", $db_user, $db_pass);
+    $pdo = new PDO("mysql:host=" . DB_HOST, DB_USER, DB_PASS);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS `$db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci;");
-    $pdo->exec("USE `$db_name`;");
-    echo "Database '$db_name' created or already exists.\n";
-    echo "Switched to database '$db_name'.\n";
+    $pdo->exec("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_persian_ci;");
+    $pdo->exec("USE `" . DB_NAME . "`;");
+    echo "Database '" . DB_NAME . "' created or already exists.\n";
+    echo "Switched to database '" . DB_NAME . "'.\n";
 } catch (PDOException $e) {
     die("DB ERROR: " . $e->getMessage());
 }

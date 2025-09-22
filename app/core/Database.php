@@ -2,15 +2,6 @@
 
 // Database Connection Handler
 class Database {
-    // --- IMPORTANT ---
-    // These are placeholders. In a real application, these should be moved
-    // to a configuration file that is NOT committed to version control.
-    private $host = 'localhost';
-    private $db_name = 'morno';
-    private $username = 'morno';
-    private $password = 'morno1234';
-    // --- /IMPORTANT ---
-
     private static $instance = null;
     private $conn;
 
@@ -18,7 +9,10 @@ class Database {
      * Private constructor to prevent direct creation of object.
      */
     private function __construct() {
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name . ';charset=utf8mb4';
+        // Require config file for database credentials
+        require_once __DIR__ . '/../../config/config.php';
+
+        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -26,7 +20,7 @@ class Database {
         ];
 
         try {
-            $this->conn = new PDO($dsn, $this->username, $this->password, $options);
+            $this->conn = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
             // In a real app, you'd log this error, not display it to the user.
             die('Connection Failed: ' . $e->getMessage());

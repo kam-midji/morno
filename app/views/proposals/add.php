@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-group">
                     <label for="start_time">زمان شروع</label>
-                    <input type="time" id="start_time" name="start_time" required>
+                    <input type="text" id="start_time" name="start_time" data-jdp-time-only placeholder="HH:MM" required>
                 </div>
     </div>
              <?php if (isset($data['errors']['event_datetime'])): ?><span class="error-text"><?php echo $data['errors']['event_datetime']; ?></span><?php endif; ?>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group">
                     <label for="end_time">زمان پایان</label>
-                    <input type="time" id="end_time" name="end_time">
+                    <input type="text" id="end_time" name="end_time" data-jdp-time-only placeholder="HH:MM">
                 </div>
             </div>
              <?php if (isset($data['errors']['event_end_datetime'])): ?><span class="error-text"><?php echo $data['errors']['event_end_datetime']; ?></span><?php endif; ?>

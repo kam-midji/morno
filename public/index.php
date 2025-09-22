@@ -5,8 +5,11 @@
 session_start();
 
 // Load core helpers
-require_once __DIR__ . '/../app/core/Database.php';
 require_once __DIR__ . '/../app/core/Session.php';
+
+// Check for "Remember Me" cookie before doing anything else
+Session::checkRememberMe();
+require_once __DIR__ . '/../app/core/Database.php';
 require_once __DIR__ . '/../app/core/Controller.php';
 require_once __DIR__ . '/../app/core/helpers.php';
 require_once __DIR__ . '/../app/core/Jalali.php';
