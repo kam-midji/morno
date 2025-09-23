@@ -19,6 +19,14 @@
             format: 'HH:mm'
         });
 
+        // Initialize date-only picker
+        jalaliDatepicker.startWatch({
+            selector: '[data-jdp-date-only]',
+            time: false,
+            persianDigits: true,
+            format: 'YYYY/MM/DD'
+        });
+
         // View Toggler Logic
         const gridView = document.querySelector('.calendar-grid-container');
         const agendaView = document.querySelector('.agenda-view');

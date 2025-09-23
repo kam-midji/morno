@@ -44,7 +44,7 @@ class Dashboard extends Controller {
 
         $approvedProposals = $this->proposalModel->getApprovedByWeek($weekStartDate, $weekEndDate);
         $pendingProposals = $this->proposalModel->getPendingForUserByWeek(Session::get('user_id'), $weekStartDate, $weekEndDate);
-        $macroPlanEvents = $this->macroPlanModel->getBySemester($currentSemester->id);
+        $macroPlanEvents = $this->macroPlanModel->getEvents($currentSemester->id);
         $audiences = $this->audienceModel->getAll();
         $organizers = $this->organizerModel->getAll();
 

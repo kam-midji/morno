@@ -10,7 +10,7 @@
     </div>
     <div class="form-group">
         <label for="event_date">تاریخ رویداد</label>
-        <input type="text" id="event_date" name="event_date" data-jdp required>
+        <input type="text" id="event_date" name="event_date" data-jdp-date-only required>
     </div>
     <div class="form-group">
         <label for="description">توضیحات/نکات</label>
