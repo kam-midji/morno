@@ -6,10 +6,27 @@
     </div>
 </div>
 
+<!-- Month Filter -->
+<div class="month-filter-bar">
+    <form action="index.php" method="GET" id="month-filter-form">
+        <input type="hidden" name="url" value="macroplan/index">
+        <label for="month-select">نمایش بر اساس ماه:</label>
+        <select name="month" id="month-select" onchange="document.getElementById('month-filter-form').submit();">
+            <option value="">-- همه ماه‌ها --</option>
+            <?php foreach ($data['months'] as $month): ?>
+                <option value="<?php echo $month['value']; ?>" <?php echo ($data['selected_month'] == $month['value']) ? 'selected' : ''; ?>>
+                    <?php echo $month['name']; ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </form>
+</div>
+
 <div class="table-responsive-wrapper">
 <table>
     <thead>
         <tr>
+            <th>تاریخ</th>
             <th>عنوان رویداد</th>
             <th>توضیحات</th>
             <th>عملیات</th>
@@ -18,6 +35,7 @@
     <tbody>
         <?php foreach ($data['events'] as $event): ?>
         <tr>
+            <td><?php echo jDateTime::date('Y/m/d', strtotime($event->event_date)); ?></td>
             <td><?php echo htmlspecialchars($event->title); ?></td>
             <td><?php echo nl2br(htmlspecialchars($event->description)); ?></td>
             <td class="actions">

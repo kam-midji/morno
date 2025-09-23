@@ -9,14 +9,25 @@ if (!class_exists('MacroPlanModel')) {
     }
 
     /**
-     * Gets all macro plan events for a given semester.
+     * Gets macro plan events, with an optional filter for a specific month.
      * @param int $semesterId
+     * @param string|null $month YYYY-MM formatted string
      * @return array
      */
-    public function getBySemester($semesterId) {
+    public function getEvents($semesterId, $month = null) {
+        $sql = "SELECT * FROM macro_plan_events WHERE semester_id = :semester_id";
+        $params = [':semester_id' => $semesterId];
+
+        if ($month) {
+            $sql .= " AND DATE_FORMAT(event_date, '%Y-%m') = :month";
+            $params[':month'] = $month;
+        }
+
+        $sql .= " ORDER BY event_date ASC";
+
         try {
-            $stmt = $this->db->prepare("SELECT * FROM macro_plan_events WHERE semester_id = :semester_id ORDER BY id ASC");
-            $stmt->execute([':semester_id' => $semesterId]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
             return [];
@@ -25,9 +36,10 @@ if (!class_exists('MacroPlanModel')) {
 
     public function add($data) {
         try {
-            $stmt = $this->db->prepare("INSERT INTO macro_plan_events (semester_id, title, description) VALUES (:semester_id, :title, :description)");
+            $stmt = $this->db->prepare("INSERT INTO macro_plan_events (semester_id, event_date, title, description) VALUES (:semester_id, :event_date, :title, :description)");
             return $stmt->execute([
                 ':semester_id' => $data['semester_id'],
+                ':event_date' => $data['event_date'],
                 ':title' => $data['title'],
                 ':description' => $data['description']
             ]);
@@ -38,11 +50,12 @@ if (!class_exists('MacroPlanModel')) {
 
     public function update($data) {
         try {
-            $stmt = $this->db->prepare("UPDATE macro_plan_events SET title = :title, description = :description WHERE id = :id");
+            $stmt = $this->db->prepare("UPDATE macro_plan_events SET title = :title, description = :description, event_date = :event_date WHERE id = :id");
             return $stmt->execute([
                 ':id' => $data['id'],
                 ':title' => $data['title'],
-                ':description' => $data['description']
+                ':description' => $data['description'],
+                ':event_date' => $data['event_date']
             ]);
         } catch (PDOException $e) {
             return false;

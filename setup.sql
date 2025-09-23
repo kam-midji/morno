@@ -79,6 +79,7 @@ CREATE TABLE `proposal_organizers` (
 CREATE TABLE `macro_plan_events` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `semester_id` INT NOT NULL,
+  `event_date` DATE NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `description` TEXT,
   FOREIGN KEY (`semester_id`) REFERENCES `semesters`(`id`) ON DELETE CASCADE

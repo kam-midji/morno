@@ -9,6 +9,10 @@
         <input type="text" id="title" name="title" required>
     </div>
     <div class="form-group">
+        <label for="event_date">تاریخ رویداد</label>
+        <input type="text" id="event_date" name="event_date" data-jdp required>
+    </div>
+    <div class="form-group">
         <label for="description">توضیحات/نکات</label>
         <textarea id="description" name="description"></textarea>
     </div>

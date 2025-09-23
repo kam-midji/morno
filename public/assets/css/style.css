@@ -142,3 +142,7 @@ tr:last-child td { border-bottom: none; }
 .modal-content { background-color: white; padding: 25px 30px; border-radius: 12px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
 .modal-close-btn { position: absolute; top: 10px; left: 20px; font-size: 2em; font-weight: bold; cursor: pointer; color: var(--text-light-color); }
 .fab { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background-color: var(--primary-color); color: white; border-radius: 50%; border: none; font-size: 2.2em; line-height: 60px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 999; }
+
+.modal-multi-select {
+    max-height: 100px;
+}

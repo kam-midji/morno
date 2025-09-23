@@ -119,24 +119,24 @@
                     <textarea id="modal-objective" name="objective" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="modal-audiences">مخاطبان</label>
-                    <select id="modal-audiences" name="audiences[]" multiple required>
-                        <?php if (!empty($data['audiences'])): ?>
-                            <?php foreach ($data['audiences'] as $audience): ?>
-                                <option value="<?php echo $audience->id; ?>"><?php echo htmlspecialchars($audience->name); ?></option>
+                    <label>مخاطبان</label>
+                    <div class="multi-select-group modal-multi-select">
+                        <?php if (!empty($audiences)): ?>
+                            <?php foreach ($audiences as $audience): ?>
+                                <label><input type="checkbox" name="audiences[]" value="<?php echo $audience->id; ?>"> <?php echo htmlspecialchars($audience->name); ?></label>
                             <?php endforeach; ?>
                         <?php endif; ?>
-                    </select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="modal-organizers">برگزارکنندگان</label>
-                    <select id="modal-organizers" name="organizers[]" multiple required>
-                         <?php if (!empty($data['organizers'])): ?>
-                            <?php foreach ($data['organizers'] as $organizer): ?>
-                                <option value="<?php echo $organizer->id; ?>"><?php echo htmlspecialchars($organizer->name); ?></option>
+                    <label>برگزارکنندگان</label>
+                     <div class="multi-select-group modal-multi-select">
+                        <?php if (!empty($organizers)): ?>
+                            <?php foreach ($organizers as $organizer): ?>
+                                <label><input type="checkbox" name="organizers[]" value="<?php echo $organizer->id; ?>"> <?php echo htmlspecialchars($organizer->name); ?></label>
                             <?php endforeach; ?>
                         <?php endif; ?>
-                    </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="modal-priority">اولویت</label>
@@ -146,7 +146,7 @@
                         <option value="low">کم</option>
                     </select>
                 </div>
-                <input type="hidden" name="current_semester_id" value="<?php echo htmlspecialchars($data['current_semester']->id ?? ''); ?>">
+                <input type="hidden" name="current_semester_id" value="<?php echo htmlspecialchars($current_semester->id ?? ''); ?>">
                 <button type="submit" class="btn btn-primary">ثبت</button>
             </form>
         </div>
