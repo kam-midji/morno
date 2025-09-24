@@ -74,9 +74,9 @@ function jalaliToGregorian($jalaliDateTime) {
  * @param string $dayStartTime The start time of the grid's day (e.g., '07:00').
  * @return array The processed array of proposals.
  */
-function prepareProposalsForGrid($proposals, $weekStartDate, $intervalMinutes = 30, $dayStartTime = '07:00') {
-    $gridStartHour = intval(explode(':', $dayStartTime)[0]);
-    $gridStartMinute = intval(explode(':', $dayStartTime)[1]);
+function prepareProposalsForGrid($proposals, $weekStartDate, $intervalMinutes = 30, $dayStartTime = '00:00') {
+    // This function now assumes a 24-hour grid starting at 00:00, with a 1-row header.
+    // The grid has 48 slots of 30 minutes each.
 
     foreach ($proposals as $proposal) {
         $eventStart = new DateTime($proposal->event_datetime);
@@ -86,21 +86,14 @@ function prepareProposalsForGrid($proposals, $weekStartDate, $intervalMinutes = 
         $dayOfWeek = (int)$eventStart->format('w'); // 0=Sun, 6=Sat
         $proposal->grid_column = (($dayOfWeek + 1) % 7) + 1; // 1=Sat, 2=Sun, ..., 7=Fri
 
-        // Calculate grid_row_start
+        // Calculate grid_row_start (based on a 00:00 start)
         $startMinutesIntoDay = ($eventStart->format('G') * 60) + (int)$eventStart->format('i');
-        $gridStartMinutesIntoDay = ($gridStartHour * 60) + $gridStartMinute;
-        $minutesFromGridStart = $startMinutesIntoDay - $gridStartMinutesIntoDay;
-        $proposal->grid_row_start = ($minutesFromGridStart / $intervalMinutes) + 1; // +1 because grid rows are 1-based
+        $slotsFromMidnight = floor($startMinutesIntoDay / $intervalMinutes);
+        $proposal->grid_row_start = $slotsFromMidnight + 2; // +1 for 1-based index, +1 for header row
 
         // Calculate grid_row_span
         $durationMinutes = ($eventEnd->getTimestamp() - $eventStart->getTimestamp()) / 60;
-        $proposal->grid_row_span = max(1, $durationMinutes / $intervalMinutes);
-
-        // Ensure events don't start before the grid time
-        if($proposal->grid_row_start < 1) {
-            $proposal->grid_row_span -= (1 - $proposal->grid_row_start);
-            $proposal->grid_row_start = 1;
-        }
+        $proposal->grid_row_span = max(1, ceil($durationMinutes / $intervalMinutes));
     }
     return $proposals;
 }

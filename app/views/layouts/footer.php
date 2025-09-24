@@ -60,16 +60,17 @@
 
         if(modal && fab && closeModalBtn) {
             fab.addEventListener('click', () => {
-                modal.style.display = 'flex';
+                modal.classList.add('active');
             });
 
-            closeModalBtn.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
+            const closeModal = () => {
+                modal.classList.remove('active');
+            };
 
+            closeModalBtn.addEventListener('click', closeModal);
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
-                    modal.style.display = 'none';
+                    closeModal();
                 }
             });
         }
@@ -104,7 +105,7 @@
     </script>
 
     <!-- Quick Add Modal -->
-    <div id="quick-add-modal" class="modal-overlay" style="display: none;">
+    <div id="quick-add-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
             <h3>ایجاد پیشنهاد سریع</h3>

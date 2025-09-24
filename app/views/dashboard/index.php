@@ -23,9 +23,9 @@
                 <!-- Time Slots Column -->
                 <div class="time-slots">
                     <div class="day-header-empty"></div>
-                    <?php for ($h = 7; $h < 21; $h++): ?>
+                    <?php for ($h = 0; $h < 24; $h++): ?>
                         <div class="time-slot"><?php echo sprintf('%02d:00', $h); ?></div>
-                        <div class="time-slot"><?php echo sprintf('%02d:30', $h); ?></div>
+                        <div class="time-slot"></div>
                     <?php endfor; ?>
                 </div>
 
@@ -95,8 +95,7 @@
                 <div class="macro-event-desc"><?php echo htmlspecialchars($event->description); ?></div>
             </div>
         <?php endforeach; ?>
-        <hr>
-        <a href="index.php?url=proposals/add" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">+ ایجاد پیشنهاد جدید</a>
+        <a href="index.php?url=macroplan" class="btn btn-secondary" style="width: 100%; text-align: center; margin-top: 10px;">مشاهده برنامه کلان</a>
     </div>
 </div>
 
