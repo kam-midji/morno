@@ -233,9 +233,10 @@ tr:last-child td { border-bottom: none; }
 
 .calendar-grid {
     display: grid;
-    grid-template-columns: 50px repeat(7, 1fr); /* Time column + 7 day columns */
-    grid-template-rows: 50px repeat(48, 20px); /* Header row + 24 hours * 2 slots */
-    background-size: 100% 40px; /* This creates the horizontal lines */
+    /* Adjust columns to be more compact */
+    grid-template-columns: 40px repeat(7, 1fr); /* Time column + 7 day columns */
+    grid-template-rows: 50px repeat(38, 30px); /* Header row + 19 hours (4am-11pm) * 2 slots @ 30px each */
+    background-size: 100% 60px; /* This creates the horizontal lines for 1-hour intervals */
     background-image: linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
 }
 
@@ -319,6 +320,8 @@ tr:last-child td { border-bottom: none; }
     box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
     transform: translateY(100%);
     transition: transform 0.3s ease-out;
+    max-height: 85vh;
+    overflow-y: auto;
 }
 .modal-overlay.active .modal-content {
     transform: translateY(0);
@@ -344,13 +347,4 @@ tr:last-child td { border-bottom: none; }
 
 .modal-multi-select {
     max-height: 100px;
-}
-
-@media (max-width: 767px) {
-    .calendar-grid-container {
-        overflow-x: auto;
-    }
-    .calendar-grid {
-        min-width: 700px; /* Ensure grid doesn't collapse */
-    }
 }

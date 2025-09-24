@@ -28,7 +28,7 @@
                 <!-- Time Slots Column -->
                 <div class="time-slots">
                     <div class="day-header-empty"></div>
-                    <?php for ($h = 0; $h < 24; $h++): ?>
+                    <?php for ($h = 4; $h <= 22; $h++): ?>
                         <div class="time-slot"><?php echo sprintf('%02d:00', $h); ?></div>
                         <div class="time-slot"></div>
                     <?php endfor; ?>
