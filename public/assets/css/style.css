@@ -39,16 +39,81 @@ body {
     border: 1px solid var(--border-color);
 }
 
-/* Header */
-.header {
+/* New Site Header */
+.site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 20px;
+    background-color: var(--bg-dark-secondary);
+    color: var(--text-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 15px;
-    margin-bottom: 25px;
 }
-.header h1 { margin: 0; font-weight: 600; color: var(--text-color); }
+.header-left, .header-right {
+    flex: 1;
+}
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+}
+.header-center {
+    flex: 2;
+    text-align: center;
+}
+.page-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.header-icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+.profile-icon-btn {
+    background-color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.profile-menu {
+    position: relative;
+}
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    background-color: var(--bg-dark-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 150px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.profile-dropdown a {
+    display: block;
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+.profile-dropdown a:hover {
+    background-color: var(--primary-color);
+}
+.profile-dropdown.active {
+    display: block;
+}
 
 /* Buttons */
 .btn {
@@ -110,6 +175,32 @@ tr:last-child td { border-bottom: none; }
 .actions button { background: none; border: none; padding: 0; }
 
 /* Main Layout & Dashboard */
+.top-bar {
+    background-color: var(--bg-dark-secondary);
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.macro-plan-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9rem;
+}
+.macro-plan-bar span:first-child {
+    font-weight: bold;
+    color: var(--text-light-color);
+}
+.macro-event-item {
+    background-color: var(--bg-dark-tertiary);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+}
+
 .main-container { display: flex; gap: 20px; flex-wrap: wrap; }
 .schedule-container { flex-grow: 1; min-width: 70%; }
 
@@ -125,8 +216,6 @@ tr:last-child td { border-bottom: none; }
 .month-filter-bar label {
     margin-bottom: 0;
 }
-.sidebar { width: 100%; flex-shrink: 0; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-@media (min-width: 992px) { .sidebar { width: 250px; } }
 
 .week-navigation { display: flex; justify-content: space-between; align-items: center; padding: 0 0 20px 0; flex-wrap: wrap; gap: 10px; }
 .week-navigation h2 { margin: 0; font-size: 1.3em; text-align: center; width: 100%; order: 2; font-weight: 600; }
@@ -200,15 +289,6 @@ tr:last-child td { border-bottom: none; }
 .event-title { font-weight: bold; }
 .event-time { font-size: 0.9em; opacity: 0.8; }
 
-/* Agenda View */
-.view-toggle { display: none; margin-bottom: 15px; gap: 10px; }
-.agenda-view { display: none; }
-@media (max-width: 767px) {
-    .calendar-grid-container { display: none; }
-    .agenda-view { display: block; }
-    .view-toggle { display: flex; }
-}
-
 /* Modal & FAB */
 .modal-overlay {
     position: fixed;
@@ -259,9 +339,18 @@ tr:last-child td { border-bottom: none; }
     text-align: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     cursor: pointer;
-    z-index: 999;
+    z-index: 1001;
 }
 
 .modal-multi-select {
     max-height: 100px;
+}
+
+@media (max-width: 767px) {
+    .calendar-grid-container {
+        overflow-x: auto;
+    }
+    .calendar-grid {
+        min-width: 700px; /* Ensure grid doesn't collapse */
+    }
 }

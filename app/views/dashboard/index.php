@@ -1,6 +1,11 @@
-<div class="header">
-    <h1><?php echo __('appName'); ?> - <?php echo htmlspecialchars(Session::get('username')); ?></h1>
-    <a href="index.php?url=users/logout" class="btn btn-secondary"><?php echo __('logout'); ?></a>
+<div class="top-bar">
+    <div class="macro-plan-bar">
+        <span>برنامه کلان:</span>
+        <?php foreach ($data['macro_plan_events'] as $event): ?>
+            <span class="macro-event-item"><?php echo htmlspecialchars($event->title); ?></span>
+        <?php endforeach; ?>
+        <a href="index.php?url=macroplan" class="btn btn-secondary btn-sm">مشاهده همه</a>
+    </div>
 </div>
 
 <div class="main-container">
@@ -60,44 +65,64 @@
                 <?php endforeach; ?>
             </div>
         </div>
-
-        <!-- Agenda View for Mobile -->
-        <div class="agenda-view">
-             <?php
-                $all_proposals = array_merge($data['approved_proposals'], $data['pending_proposals']);
-                usort($all_proposals, function($a, $b) {
-                    return strtotime($a->event_datetime) - strtotime($b->event_datetime);
-                });
-            ?>
-            <?php if(empty($all_proposals)): ?>
-                <p>هیچ برنامه‌ای برای این هفته وجود ندارد.</p>
-            <?php else: ?>
-                <?php foreach ($all_proposals as $event): ?>
-                    <div class="event <?php echo $event->status == 'approved' ? 'event-approved' : 'event-pending'; ?>">
-                        <div class="event-title"><?php echo htmlspecialchars($event->title); ?> <?php echo $event->status == 'pending' ? '(در انتظار)' : ''; ?></div>
-                        <div class="event-time">
-                            <?php echo jDateTime::date('l Y/m/d - H:i', strtotime($event->event_datetime)); ?>
-                        </div>
-                         <?php if($event->status == 'pending'): ?>
-                            <div><a href="index.php?url=proposals/edit/<?php echo $event->id; ?>">ویرایش</a></div>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-    </div>
-
-    <div class="sidebar">
-        <h3>برنامه کلان</h3>
-        <?php foreach ($data['macro_plan_events'] as $event): ?>
-            <div class="macro-event">
-                <div class="macro-event-title"><?php echo htmlspecialchars($event->title); ?></div>
-                <div class="macro-event-desc"><?php echo htmlspecialchars($event->description); ?></div>
-            </div>
-        <?php endforeach; ?>
-        <a href="index.php?url=macroplan" class="btn btn-secondary" style="width: 100%; text-align: center; margin-top: 10px;">مشاهده برنامه کلان</a>
     </div>
 </div>
 
 <!-- Floating Action Button -->
 <button id="fab-add-proposal" class="fab">+</button>
+
+<!-- Quick Add Modal -->
+<div id="quick-add-modal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="modal-close-btn">&times;</span>
+        <h3>ایجاد پیشنهاد سریع</h3>
+        <form id="quick-add-form" action="index.php?url=proposals/add" method="POST">
+            <div class="form-group">
+                <label for="modal-title">عنوان برنامه</label>
+                <input type="text" id="modal-title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="modal-event-datetime">زمان شروع</label>
+                <input type="text" id="modal-event-datetime" name="event_datetime" data-jdp data-jdp-time required>
+            </div>
+            <div class="form-group">
+                <label for="modal-event-end-datetime">زمان پایان</label>
+                <input type="text" id="modal-event-end-datetime" name="event_end_datetime" data-jdp data-jdp-time>
+            </div>
+             <div class="form-group">
+                <label for="modal-objective">هدف برنامه</label>
+                <textarea id="modal-objective" name="objective" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>مخاطبان</label>
+                <div class="multi-select-group modal-multi-select">
+                    <?php if (!empty($audiences)): ?>
+                        <?php foreach ($audiences as $audience): ?>
+                            <label><input type="checkbox" name="audiences[]" value="<?php echo $audience->id; ?>"> <?php echo htmlspecialchars($audience->name); ?></label>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>برگزارکنندگان</label>
+                 <div class="multi-select-group modal-multi-select">
+                    <?php if (!empty($organizers)): ?>
+                        <?php foreach ($organizers as $organizer): ?>
+                            <label><input type="checkbox" name="organizers[]" value="<?php echo $organizer->id; ?>"> <?php echo htmlspecialchars($organizer->name); ?></label>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="modal-priority">اولویت</label>
+                <select id="modal-priority" name="priority" required>
+                    <option value="medium" selected>متوسط</option>
+                    <option value="high">زیاد</option>
+                    <option value="low">کم</option>
+                </select>
+            </div>
+            <input type="hidden" name="current_semester_id" value="<?php echo htmlspecialchars($current_semester->id ?? ''); ?>">
+            <button type="submit" class="btn btn-primary">ثبت</button>
+        </form>
+    </div>
+</div>

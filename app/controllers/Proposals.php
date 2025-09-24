@@ -79,6 +79,8 @@ class Proposals extends Controller {
                 }
             } else {
                 // Reload form with errors and data
+                $data['page_title'] = 'ایجاد پیشنهاد جدید';
+                $data['show_back_button'] = true;
                 $data['audiences'] = $this->audienceModel->getAll();
                 $data['organizers'] = $this->organizerModel->getAll();
                 $this->view('proposals/add', $data);
@@ -96,6 +98,8 @@ class Proposals extends Controller {
             }
 
             $data = [
+                'page_title' => 'ایجاد پیشنهاد جدید',
+                'show_back_button' => true,
                 'audiences' => $audiences,
                 'organizers' => $organizers,
                 'current_semester_id' => $currentSemester->id,
@@ -156,7 +160,9 @@ class Proposals extends Controller {
                 'all_audiences' => $this->audienceModel->getAll(),
                 'selected_audiences' => $proposal->audiences,
                 'all_organizers' => $this->organizerModel->getAll(),
-                'selected_organizers' => $proposal->organizers
+                'selected_organizers' => $proposal->organizers,
+                'page_title' => 'ویرایش پیشنهاد',
+                'show_back_button' => true
             ];
             $this->view('proposals/edit', $data);
         }

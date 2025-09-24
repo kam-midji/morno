@@ -42,6 +42,9 @@ class Macroplan extends Controller {
         $events = $this->macroPlanModel->getEvents($currentSemester->id, $selectedMonth);
 
         $data = [
+            'page_title' => 'مدیریت برنامه کلان',
+            'show_back_button' => true,
+            'back_button_url' => 'index.php?url=dashboard',
             'events' => $events,
             'semester' => $currentSemester,
             'months' => $months,
@@ -72,11 +75,16 @@ class Macroplan extends Controller {
                 $this->macroPlanModel->add($data);
                 header('location: index.php?url=macroplan');
             } else {
-                // Handle error
-                $this->view('macroplan/add', ['error' => 'Title and date are required']);
+                $data['page_title'] = 'افزودن رویداد';
+                $data['show_back_button'] = true;
+                $data['error'] = 'Title and date are required';
+                $this->view('macroplan/add', $data);
             }
         } else {
-            $this->view('macroplan/add');
+            $this->view('macroplan/add', [
+                'page_title' => 'افزودن رویداد',
+                'show_back_button' => true
+            ]);
         }
     }
 
@@ -98,6 +106,8 @@ class Macroplan extends Controller {
             } else {
                 $event = $this->macroPlanModel->getById($id);
                 $data['event_date_jalali'] = jDateTime::date('Y/m/d', strtotime($event->event_date));
+                $data['page_title'] = 'ویرایش رویداد';
+                $data['show_back_button'] = true;
                 $this->view('macroplan/edit', $data);
             }
         } else {
@@ -110,7 +120,9 @@ class Macroplan extends Controller {
                 'id' => $id,
                 'title' => $event->title,
                 'description' => $event->description,
-                'event_date_jalali' => jDateTime::date('Y/m/d', strtotime($event->event_date))
+                'event_date_jalali' => jDateTime::date('Y/m/d', strtotime($event->event_date)),
+                'page_title' => 'ویرایش رویداد',
+                'show_back_button' => true
             ];
             $this->view('macroplan/edit', $data);
         }
