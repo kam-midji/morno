@@ -36,7 +36,7 @@
 
                 <!-- Day Columns -->
                 <?php
-                $days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
+                $days = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
                 for ($i = 0; $i < 7; $i++):
                     $currentDayTimestamp = strtotime($data['week_start_date'] . " +$i days");
                 ?>
