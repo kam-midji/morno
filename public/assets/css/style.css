@@ -204,6 +204,15 @@ tr:last-child td { border-bottom: none; }
 .main-container { display: flex; gap: 20px; flex-wrap: wrap; }
 .schedule-container { flex-grow: 1; min-width: 70%; }
 
+.full-width-container {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
 .month-filter-bar {
     background-color: var(--bg-dark-tertiary);
     padding: 15px;
@@ -235,9 +244,10 @@ tr:last-child td { border-bottom: none; }
     display: grid;
     grid-template-columns: 40px repeat(7, 1fr);
     grid-template-rows: 50px repeat(38, 30px);
-    background-size: 100% 60px; /* This creates the horizontal lines for 1-hour intervals */
-    background-image: linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
-    background-position: 0 50px; /* Offset horizontal lines to start below the header */
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-dark-primary);
 }
 
 .time-slots, .day-column { display: contents; }
@@ -250,6 +260,7 @@ tr:last-child td { border-bottom: none; }
     position: relative;
     top: -0.7em; /* Center align with lines */
     border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 /* Only show full hour labels */
 .time-slot:nth-child(odd) {
@@ -267,6 +278,7 @@ tr:last-child td { border-bottom: none; }
     background-color: var(--bg-dark-secondary);
     z-index: 10;
     border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 .day-header:last-of-type {
     border-right: none;
@@ -348,7 +360,51 @@ tr:last-child td { border-bottom: none; }
     max-height: 100px;
 }
 
-/* Ensure Jalali Date Picker appears over the modal */
+/* Ensure Jalali Date Picker appears over the modal and is styled for dark theme */
+@media (max-width: 767px) {
+    .calendar-grid-container {
+        overflow-x: auto;
+    }
+    .calendar-grid {
+        min-width: 700px; /* Ensure grid doesn't collapse */
+    }
+}
+
 jdp-container {
     z-index: 1002 !important;
+    background-color: var(--bg-dark-tertiary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+jdp-container, jdp-container .jdp-month, jdp-container .jdp-year, jdp-container .jdp-day, jdp-container .jdp-day-name, jdp-container .jdp-btn-empty, jdp-container .jdp-btn-today {
+    color: var(--text-color) !important;
+}
+jdp-container .jdp-day:not(.disabled-day):hover {
+    background: var(--bg-dark-primary) !important;
+}
+jdp-container .jdp-day.selected {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+}
+jdp-container .jdp-day-name {
+    background-color: var(--bg-dark-primary) !important;
+}
+jdp-container .jdp-icon-minus, jdp-container .jdp-icon-plus {
+    border: 1px solid var(--border-color) !important;
+}
+jdp-container .jdp-icon-minus svg, jdp-container .jdp-icon-plus svg {
+    fill: var(--text-color);
+}
+jdp-container .jdp-months, jdp-container .jdp-years {
+    fill: var(--text-color) !important;
+    color: var(--text-color) !important;
+}
+jdp-container .jdp-month, jdp-container .jdp-year, jdp-container .jdp-time, jdp-container .jdp-month select, jdp-container .jdp-year select, jdp-container .jdp-time select {
+    background-color: var(--bg-dark-tertiary) !important;
+    color: var(--text-color) !important;
+}
+jdp-container .jdp-btn-today {
+    background-color: var(--primary-color) !important;
+}
+jdp-container .jdp-btn-empty {
+    background-color: var(--bg-dark-primary) !important;
 }

@@ -6,9 +6,10 @@
     </div>
 </div>
 
-<!-- Month Filter -->
-<div class="month-filter-bar">
-    <form action="index.php" method="GET" id="month-filter-form">
+<div class="container">
+    <!-- Month Filter -->
+    <div class="month-filter-bar">
+        <form action="index.php" method="GET" id="month-filter-form">
         <input type="hidden" name="url" value="macroplan/index">
         <label for="month-select">نمایش بر اساس ماه:</label>
         <select name="month" id="month-select" onchange="document.getElementById('month-filter-form').submit();">
@@ -48,4 +49,5 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+</div>
 </div>

@@ -48,15 +48,18 @@ class Dashboard extends Controller {
         $audiences = $this->audienceModel->getAll();
         $organizers = $this->organizerModel->getAll();
 
+        // Store data needed by the global modal in the session
+        Session::set('modal_audiences', $audiences);
+        Session::set('modal_organizers', $organizers);
+        Session::set('current_semester_id', $currentSemester->id);
+
         $data = [
             'week_start_date' => $weekStartDate,
             'week_end_date' => $weekEndDate,
             'approved_proposals' => prepareProposalsForGrid($approvedProposals, $weekStartDate),
             'pending_proposals' => prepareProposalsForGrid($pendingProposals, $weekStartDate),
             'macro_plan_events' => $macroPlanEvents,
-            'current_semester' => $currentSemester,
-            'audiences' => $audiences,
-            'organizers' => $organizers
+            'current_semester' => $currentSemester
         ];
 
         $this->view('dashboard/index', $data);
